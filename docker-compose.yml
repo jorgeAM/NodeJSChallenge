@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  testdb:
+  db:
     image: postgres:13-alpine
     restart: always
     ports:
