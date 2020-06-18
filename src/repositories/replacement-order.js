@@ -28,9 +28,32 @@ const assignAttender = async (replacementOrder, user) => {
   return getReplacementOrder(updatedOrder.id)
 }
 
+const doneOrder = id => {
+  const query = {
+    where: {
+      id
+    },
+    include: [
+      models.Product,
+      {
+        model: models.User,
+        as: 'Attender'
+      }
+    ],
+    returning: true
+  }
+
+  const payload = {
+    done: true
+  }
+
+  return models.ReplacementOrder.update(payload, query)
+}
+
 export {
   getReplacementOrder,
   getReplacementOrders,
   createReplacementOrder,
-  assignAttender
+  assignAttender,
+  doneOrder
 }

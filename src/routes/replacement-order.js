@@ -5,7 +5,8 @@ import {
   createOrder,
   getById,
   getAll,
-  assignAttenderToReplacementOrder
+  assignAttenderToReplacementOrder,
+  doneReplacementOrder
 } from '../services/replacement-order'
 
 const router = express.Router()
@@ -55,6 +56,18 @@ router.put('/:id/assign', auth, admin, async (req, res) => {
 
   try {
     const replacementOrder = await assignAttenderToReplacementOrder(id, userId)
+
+    return res.json({ replacementOrder })
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
+})
+
+router.put('/:id', auth, async (req, res) => {
+  try {
+    const { id } = req.params
+
+    const [_, [replacementOrder]] = await doneReplacementOrder(id, req.user.id)
 
     return res.json({ replacementOrder })
   } catch (error) {

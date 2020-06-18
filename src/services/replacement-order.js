@@ -2,11 +2,23 @@ import {
   createReplacementOrder,
   getReplacementOrders,
   getReplacementOrder,
-  assignAttender
+  assignAttender,
+  doneOrder
 } from '../repositories/replacement-order'
+import getProduct from '../repositories/products'
 import { getUserById } from '../repositories/user'
 
-const createOrder = payload => createReplacementOrder(payload)
+const createOrder = payload => {
+  const { ProductId } = payload
+
+  const product = getProduct(ProductId)
+
+  if (!product) {
+    throw new Error('La producto no existe')
+  }
+
+  return createReplacementOrder(payload)
+}
 
 const getById = id => getReplacementOrder(id)
 
@@ -28,4 +40,24 @@ const assignAttenderToReplacementOrder = async (id, userId) => {
   return assignAttender(replacementOrder, user)
 }
 
-export { createOrder, getById, getAll, assignAttenderToReplacementOrder }
+const doneReplacementOrder = async (id, userId) => {
+  const replacementOrder = await getReplacementOrder(id)
+
+  if (!replacementOrder || !!replacementOrder.done) {
+    throw new Error('La order no existe')
+  }
+
+  if (replacementOrder.AttenderId != userId) {
+    throw new Error('No tienes asignada esta orden')
+  }
+
+  return doneOrder(id)
+}
+
+export {
+  createOrder,
+  getById,
+  getAll,
+  assignAttenderToReplacementOrder,
+  doneReplacementOrder
+}

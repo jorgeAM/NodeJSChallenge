@@ -1,9 +1,7 @@
 import getProduct from '../repositories/products'
 
-const getProduct = async payload => {
-  const { productId } = payload
-
-  const product = await getProduct(productId)
+const getProductByIdentifier = async id => {
+  const product = await getProduct(id)
 
   if (!product) {
     throw new Error('Producto no encontrado')
@@ -12,4 +10,4 @@ const getProduct = async payload => {
   return { product }
 }
 
-export default getAuthInfo
+export default getProductByIdentifier
