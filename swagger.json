@@ -1,0 +1,562 @@
+{
+  "info": {
+    "title": "tottuschallenge",
+    "version": "1.0.0",
+    "license": {
+      "name": "ISC"
+    },
+    "description": "[Specification JSON](/api-spec)"
+  },
+  "securitySchemes": {
+    "JWT": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "paths": {
+    "/api/v1/auth/login": {
+      "post": {
+        "summary": "/api/v1/auth/login",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "credentials",
+            "required": true,
+            "description": "user credentials",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "si el correo y la contraseña son correctas",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZnVsbE5hbWUiOiJhZG1pbmlzdHJhdG9yIiwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1OTI1MDY3NzUsImV4cCI6MTU5MjUzNTU3NX0.Cnr81Y5XWRTR-aqNcQl22sTzHJFXe6H_kLcUDrLiTRY"
+                },
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 3
+                    },
+                    "fullName": {
+                      "type": "string",
+                      "example": "administrator"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "admin@gmail.com"
+                    },
+                    "password": {
+                      "type": "string",
+                      "example": "******"
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "admin"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2020-06-18T05:20:46.940Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2020-06-18T05:20:46.940Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "En caso la contraseña este mal",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Contraseña incorrecta"
+                }
+              }
+            }
+          }
+        },
+        "produces": ["application/json"]
+      }
+    },
+    "/api/v1/replacement-order": {
+      "post": {
+        "summary": "/api/v1/replacement-order",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "order",
+            "required": true,
+            "description": "payload para crear orden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "number"
+                },
+                "quantity": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "En caso se cree correctamente la orden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "replacementOrder": {
+                  "type": "object",
+                  "properties": {
+                    "done": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "id": {
+                      "type": "number",
+                      "example": 6
+                    },
+                    "ProductId": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "quantity": {
+                      "type": "number",
+                      "example": 10
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2020-06-18T18:59:30.311Z"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2020-06-18T18:59:30.311Z"
+                    },
+                    "AttenderId": {
+                      "type": "null",
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Si el producto no existe",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "producto no existe"
+                }
+              }
+            }
+          }
+        },
+        "produces": ["application/json"]
+      },
+      "get": {
+        "summary": "/api/v1/replacement-order",
+        "consumes": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "replacementOrders": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number"
+                      },
+                      "quantity": {
+                        "type": "number"
+                      },
+                      "done": {
+                        "type": "boolean"
+                      },
+                      "createdAt": {
+                        "type": "string"
+                      },
+                      "updatedAt": {
+                        "type": "string"
+                      },
+                      "ProductId": {
+                        "type": "number"
+                      },
+                      "AttenderId": {
+                        "type": "null"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "quantity",
+                      "done",
+                      "createdAt",
+                      "updatedAt",
+                      "ProductId",
+                      "AttenderId"
+                    ]
+                  },
+                  "example": [
+                    {
+                      "id": 2,
+                      "quantity": 10,
+                      "done": false,
+                      "createdAt": "2020-06-18T08:16:01.132Z",
+                      "updatedAt": "2020-06-18T08:16:01.132Z",
+                      "ProductId": 1,
+                      "AttenderId": null
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "produces": ["application/json"]
+      }
+    },
+    "/api/v1/replacement-order/{id}": {
+      "get": {
+        "summary": "/api/v1/replacement-order/{id}",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "replacementOrder": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 4
+                    },
+                    "quantity": {
+                      "type": "number",
+                      "example": 10
+                    },
+                    "done": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2020-06-18T18:55:05.422Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2020-06-18T18:55:05.422Z"
+                    },
+                    "ProductId": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "AttenderId": {
+                      "type": "null",
+                      "example": null
+                    },
+                    "Product": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "sku": {
+                          "type": "string",
+                          "example": "CC450"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Coca cola 450ml"
+                        },
+                        "price": {
+                          "type": "number",
+                          "example": 3
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2020-06-18T05:20:46.951Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2020-06-18T05:20:46.951Z"
+                        }
+                      }
+                    },
+                    "Attender": {
+                      "type": "null",
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Orden no existe"
+                }
+              }
+            }
+          }
+        },
+        "produces": ["application/json"]
+      },
+      "put": {
+        "summary": "/api/v1/replacement-order/{id}",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Si la orden se cierra correctamente",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "replacementOrder": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 6
+                    },
+                    "quantity": {
+                      "type": "number",
+                      "example": 10
+                    },
+                    "done": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2020-06-18T18:59:30.311Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2020-06-18T19:02:21.053Z"
+                    },
+                    "AttenderId": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "ProductId": {
+                      "type": "number",
+                      "example": 1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "La orden no existe",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "No tienes asignada esta orden"
+                }
+              }
+            }
+          }
+        },
+        "produces": ["application/json"]
+      }
+    },
+    "/api/v1/replacement-order/{id}/assign": {
+      "put": {
+        "summary": "/api/v1/replacement-order/{id}/assign",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "user",
+            "required": true,
+            "description": "usuario a asignar",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Si se pudo asignar el usuario correctamente",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "replacementOrder": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 6
+                    },
+                    "quantity": {
+                      "type": "number",
+                      "example": 10
+                    },
+                    "done": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2020-06-18T18:59:30.311Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2020-06-18T19:01:24.971Z"
+                    },
+                    "ProductId": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "AttenderId": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "Product": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "sku": {
+                          "type": "string",
+                          "example": "CC450"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Coca cola 450ml"
+                        },
+                        "price": {
+                          "type": "number",
+                          "example": 3
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2020-06-18T05:20:46.951Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2020-06-18T05:20:46.951Z"
+                        }
+                      }
+                    },
+                    "Attender": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "fullName": {
+                          "type": "string",
+                          "example": "Jorge Alfaro"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "jorge@gmail.com"
+                        },
+                        "password": {
+                          "type": "string",
+                          "example": "******"
+                        },
+                        "role": {
+                          "type": "string",
+                          "example": "user"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2020-06-18T05:20:46.783Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2020-06-18T05:20:46.783Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Si el usuario no existe",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Usuario no existe"
+                }
+              }
+            }
+          }
+        },
+        "produces": ["application/json"]
+      }
+    }
+  },
+  "swagger": "2.0"
+}

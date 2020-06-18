@@ -8,10 +8,10 @@ import {
 import getProduct from '../repositories/products'
 import { getUserById } from '../repositories/user'
 
-const createOrder = payload => {
+const createOrder = async payload => {
   const { ProductId } = payload
 
-  const product = getProduct(ProductId)
+  const product = await getProduct(ProductId)
 
   if (!product) {
     throw new Error('La producto no existe')
@@ -20,7 +20,15 @@ const createOrder = payload => {
   return createReplacementOrder(payload)
 }
 
-const getById = id => getReplacementOrder(id)
+const getById = async id => {
+  const replacementOrder = await getReplacementOrder(id)
+
+  if (!replacementOrder) {
+    throw new Error('Orden no existe')
+  }
+
+  return replacementOrder
+}
 
 const getAll = () => getReplacementOrders()
 
