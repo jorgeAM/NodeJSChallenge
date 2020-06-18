@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 
 const KEY = process.env.JWT_KEY
 
-const generateJWT = async user => {
+const generateJWT = user => {
   const data = {
     id: user.id,
     fullName: user.fullName,
