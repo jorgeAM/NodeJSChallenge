@@ -8,7 +8,7 @@ module.exports = {
       },
       done: {
         type: Sequelize.BOOLEAN,
-        defaultValue: true
+        defaultValue: false
       },
       createdAt: {
         type: Sequelize.DATE,
