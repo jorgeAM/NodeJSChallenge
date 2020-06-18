@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import getUserByEmail from '../repositories/user'
+import { getUserByEmail } from '../repositories/user'
 import generateJWT from '../utils/generate-jwt'
 
 const getAuthInfo = async payload => {

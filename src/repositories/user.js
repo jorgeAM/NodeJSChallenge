@@ -8,4 +8,6 @@ const getUserByEmail = email => {
   return models.User.findOne(query)
 }
 
-export default getUserByEmail
+const getUserById = id => models.User.findByPk(id)
+
+export { getUserByEmail, getUserById }

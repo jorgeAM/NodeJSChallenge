@@ -22,4 +22,15 @@ const getReplacementOrders = () => models.ReplacementOrder.findAll()
 const createReplacementOrder = payload =>
   models.ReplacementOrder.create(payload)
 
-export { getReplacementOrder, getReplacementOrders, createReplacementOrder }
+const assignAttender = async (replacementOrder, user) => {
+  const updatedOrder = await replacementOrder.setAttender(user)
+
+  return getReplacementOrder(updatedOrder.id)
+}
+
+export {
+  getReplacementOrder,
+  getReplacementOrders,
+  createReplacementOrder,
+  assignAttender
+}

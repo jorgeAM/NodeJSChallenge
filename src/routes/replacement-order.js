@@ -1,7 +1,12 @@
 import express from 'express'
 import auth from '../middlewares/auth'
 import admin from '../middlewares/admin'
-import { createOrder, getById, getAll } from '../services/replacement-order'
+import {
+  createOrder,
+  getById,
+  getAll,
+  assignAttenderToReplacementOrder
+} from '../services/replacement-order'
 
 const router = express.Router()
 
@@ -26,7 +31,7 @@ router.get('/', auth, admin, async (req, res) => {
   try {
     const replacementOrders = await getAll()
 
-    res.json({ replacementOrders })
+    return res.json({ replacementOrders })
   } catch (error) {
     return res.status(500).json({ message: error.message })
   }
@@ -38,14 +43,23 @@ router.get('/:id', async (req, res) => {
   try {
     const replacementOrder = await getById(id)
 
-    res.json({ replacementOrder })
+    return res.json({ replacementOrder })
   } catch (error) {
     return res.status(500).json({ message: error.message })
   }
 })
 
-router.put('/:id/assign', async (req, res) => {
-  res.json({ message: 'this is assignation' })
+router.put('/:id/assign', auth, admin, async (req, res) => {
+  const { id } = req.params
+  const { userId } = req.body
+
+  try {
+    const replacementOrder = await assignAttenderToReplacementOrder(id, userId)
+
+    return res.json({ replacementOrder })
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
 })
 
 export default router
