@@ -1,10 +1,14 @@
 module.exports = {
   up: (queryInterface, Sequelize) =>
-    queryInterface.createTable('ReplacementOrder', {
+    queryInterface.createTable('ReplacementOrders', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
+      },
+      quantity: {
+        type: Sequelize.INTEGER,
+        allowNull: false
       },
       done: {
         type: Sequelize.BOOLEAN,
@@ -39,5 +43,5 @@ module.exports = {
         onUpdate: 'CASCADE'
       }
     }),
-  down: queryInterface => queryInterface.dropTable('ReplacementOrder')
+  down: queryInterface => queryInterface.dropTable('ReplacementOrders')
 }

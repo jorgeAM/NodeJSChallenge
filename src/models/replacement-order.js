@@ -7,6 +7,10 @@ const ReplacementOrder = (sequelize, Sequelize) => {
         primaryKey: true,
         autoIncrement: true
       },
+      quantity: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       done: {
         type: Sequelize.BOOLEAN,
         defaultValue: false

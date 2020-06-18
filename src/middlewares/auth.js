@@ -1,7 +1,7 @@
 import moment from 'moment'
 import jwt from 'jsonwebtoken'
 
-const KEY = process.env.JWT_SECRET
+const KEY = process.env.JWT_KEY
 
 const auth = (req, res, next) => {
   if (!req.headers.authorization) {
@@ -13,13 +13,14 @@ const auth = (req, res, next) => {
 
   try {
     let payload = jwt.verify(token, KEY)
+
     if (moment().unix() >= payload.exp) {
       return res.status(401).json({ message: 'El token ha expirado' })
     }
 
     req.user = payload
     next()
-  } catch (e) {
+  } catch (error) {
     return res.status(500).json({ message: 'Tu token es inválido' })
   }
 }

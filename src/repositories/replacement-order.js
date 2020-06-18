@@ -1,6 +1,21 @@
 import { models } from '../models'
 
-const getReplacementOrder = id => models.ReplacementOrder.findByPk(id)
+const getReplacementOrder = id => {
+  const query = {
+    where: {
+      id
+    },
+    include: [
+      models.Product,
+      {
+        model: models.User,
+        as: 'Attender'
+      }
+    ]
+  }
+
+  return models.ReplacementOrder.unscoped().findOne(query)
+}
 
 const getReplacementOrders = () => models.ReplacementOrder.findAll()
 
